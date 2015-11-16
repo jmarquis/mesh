@@ -1,3 +1,6 @@
+import "./styles/externals";
+import "./styles/base";
+
 import React from "react";
 import { render } from "react-dom";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
@@ -26,12 +29,13 @@ const store = compose(
 )(createStore)(combinedReducers);
 
 import App from "./components/App";
+import Sample from "./components/Sample";
 
 render((
 	<Provider store={store}>
 		<ReduxRouter>
 			<Route path="/" component={App}>
-
+				<Route path="default" component={Sample}/>
 			</Route>
 			<Redirect path="*" to="/"/>
 		</ReduxRouter>
