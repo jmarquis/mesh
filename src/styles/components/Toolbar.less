@@ -1,5 +1,36 @@
 .Toolbar {
 	flex: none;
 	height: 120px;
-	background-color: #ddd;
+	padding: 40px 40px 40px 50px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+
+	> .team-names {
+
+		> .primary-team {
+			display: inline-block;
+			font-size: 20px;
+			font-weight: 500;
+
+			> figure {
+				margin: 0 10px 0 -1px;
+				width: 40px;
+				height: 40px;
+				background-color: #eee;
+				border-radius: 40px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+		}
+
+		> .SecondaryTeamSelector {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 10px;
+			position: relative;
+			top: -1px;
+		}
+	}
 }

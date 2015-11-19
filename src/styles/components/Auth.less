@@ -18,11 +18,17 @@
 			margin: 0 auto 30px;
 		}
 
-		> .caption {
+		> .caption,
+		> .error {
 			font-size: 24px;
 			line-height: 1.25;
 			text-align: center;
 			color: #666;
+		}
+
+		> .error {
+			color: #f00;
+			display: none;
 		}
 
 		> form {
@@ -79,5 +85,21 @@
 				}
 			}
 		}
+	}
+
+	&.error > section {
+
+		> .caption {
+			display: none;
+		}
+
+		> .error {
+			display: block;
+		}
+	}
+
+	&.loading > section {
+		opacity: .5;
+		pointer-events: none;
 	}
 }

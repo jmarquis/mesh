@@ -2,7 +2,7 @@ import "../styles/components/Auth";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { pushState } from "redux-simple-router";
+import { updatePath } from "redux-simple-router";
 
 import { authenticate } from "../firebase/index";
 
@@ -10,61 +10,58 @@ import Image from "../components/Image";
 
 import logo from "../images/logo-vertical.svg";
 
-@connect(state => {
-
-	const { router } = state;
-
-	return {
-		router
-	};
-
-}, {
-	pushState
-})
+@connect()
 export default class Auth extends Component {
 
 	constructor (props) {
 		super(props);
 		this.state = {
-			loading: true
+			loading: false,
+			error: false,
+			confirmedNotAuthenticated: false
 		};
 	}
 
 	componentDidMount () {
 
-		const { router } = this.props;
-
-		console.log("ROUTER", router);
+		const { dispatch } = this.props;
 
 		setTimeout(() => {
-			authenticate().then(() => {
-				this.props.pushState("/");
-			}).catch(() => {
-				this.setState({ loading: false });
-			});
+			authenticate()
+				.then(() => {
+					dispatch(updatePath("/teams/123"));
+				})
+				.catch(() => {
+					this.setState({
+						loading: false,
+						confirmedNotAuthenticated: true
+					});
+				});
 		}, 1000);
 
 	}
 
 	render () {
 
-		if (this.state.loading)
+		if (!this.state.confirmedNotAuthenticated) {
 			return (
-				<div>
+				<div className="Auth">
 					loading
 				</div>
 			);
-
-		if (!this.state.loading && !this.state.authenticated) {
+		} else {
 			return (
-				<div className="Auth">
+				<div className={ "Auth" + (this.state.error ? " error" : "") + (this.state.loading ? " loading" : "") }>
 					<section>
 						<Image svg={logo}/>
-						<div className="caption">
+						<p className="caption">
 							Sign in with your email address and password.
-						</div>
+						</p>
+						<p className="error">
+							Sorry, your email address or password is incorrect.
+						</p>
 						<form onSubmit={this.handleSubmit}>
-							<input type="email" name="email" placeholder="you@yourdomain.com" value={this.state.email} onChange={this.handleEmailChange}/>
+							<input type="email" name="email" autoFocus placeholder="you@yourdomain.com" value={this.state.email} onChange={this.handleEmailChange}/>
 							<input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange}/>
 							<input type="submit" value="Sign in"/>
 						</form>
@@ -73,33 +70,39 @@ export default class Auth extends Component {
 			);
 		}
 
-		if (this.state.authenticated) {
-			return (
-				<div>
-					You are logged in!
-				</div>
-			);
-		}
 	}
 
 	handleSubmit = (event) => {
+
+		const { dispatch } = this.props;
+
 		event.preventDefault();
-		this.setState({ loading: true });
-		authenticate(this.state.email, this.state.password)
-			.then(() => {
 
-			})
-			.catch(() => {
+		this.setState({
+			loading: true
+		});
 
-			});
+		setTimeout(() => {
+			authenticate(this.state.email, this.state.password)
+				.then(() => {
+					dispatch(updatePath("/teams/123"));
+				})
+				.catch(() => {
+					this.setState({
+						loading: false,
+						error: true
+					});
+				});
+		}, 500);
+
 	}
 
 	handleEmailChange = (event) => {
-		this.setState({ email: event.target.value.slice(0, 100) });
+		if (!this.state.loading) this.setState({ email: event.target.value.slice(0, 100) });
 	}
 
 	handlePasswordChange = (event) => {
-		this.setState({ password: event.target.value.slice(0, 50) });
+		if (!this.state.loading) this.setState({ password: event.target.value.slice(0, 50) });
 	}
 
 }
