@@ -8,13 +8,13 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import createLogger from "redux-logger";
 import { createHistory } from "history";
-import { Route, IndexRoute, Redirect } from "react-router";
-import { ReduxRouter, routerStateReducer, reduxReactRouter } from "redux-router";
+import { Router, Route, IndexRoute, Redirect } from "react-router";
+import { syncReduxAndRouter, routeReducer } from "redux-simple-router";
 
 import * as reducers from "./reducers";
 
 const combinedReducers = combineReducers({
-	router: routerStateReducer,
+	router: routeReducer,
 	...reducers
 });
 
@@ -24,21 +24,24 @@ const logger = createLogger({
 });
 
 const store = compose(
-	applyMiddleware(thunk, logger),
-	reduxReactRouter({ createHistory })
+	applyMiddleware(thunk, logger)
 )(createStore)(combinedReducers);
+
+const history = createHistory();
+
+syncReduxAndRouter(history, store, state => state.router);
 
 import Auth from "./components/Auth";
 import Team from "./components/Team";
 
 render((
 	<Provider store={store}>
-		<ReduxRouter>
+		<Router history={history}>
 			<Route path="/">
 				<IndexRoute component={Auth}/>
 				<Route path="/teams/:teamId" component={Team}></Route>
 			</Route>
 			<Redirect path="*" to="/"/>
-		</ReduxRouter>
+		</Router>
 	</Provider>
 ), document.getElementById("root"));

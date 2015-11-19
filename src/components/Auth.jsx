@@ -1,6 +1,8 @@
 import "../styles/components/Auth";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { pushState } from "redux-simple-router";
 
 import { authenticate } from "../firebase/index";
 
@@ -8,22 +10,40 @@ import Image from "../components/Image";
 
 import logo from "../images/logo-vertical.svg";
 
+@connect(state => {
+
+	const { router } = state;
+
+	return {
+		router
+	};
+
+}, {
+	pushState
+})
 export default class Auth extends Component {
 
 	constructor (props) {
 		super(props);
 		this.state = {
-			loading: true,
-			authenticated: false
+			loading: true
 		};
 	}
 
 	componentDidMount () {
-		authenticate().then(() => {
-			this.setState({ authenticated: true, loading: false });
-		}).catch(() => {
-			this.setState({ loading: false });
-		});
+
+		const { router } = this.props;
+
+		console.log("ROUTER", router);
+
+		setTimeout(() => {
+			authenticate().then(() => {
+				this.props.pushState("/");
+			}).catch(() => {
+				this.setState({ loading: false });
+			});
+		}, 1000);
+
 	}
 
 	render () {
@@ -43,9 +63,9 @@ export default class Auth extends Component {
 						<div className="caption">
 							Sign in with your email address and password.
 						</div>
-						<form>
-							<input type="email" placeholder="you@yourdomain.com"/>
-							<input type="password" placeholder="password"/>
+						<form onSubmit={this.handleSubmit}>
+							<input type="email" name="email" placeholder="you@yourdomain.com" value={this.state.email} onChange={this.handleEmailChange}/>
+							<input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange}/>
 							<input type="submit" value="Sign in"/>
 						</form>
 					</section>
@@ -60,6 +80,26 @@ export default class Auth extends Component {
 				</div>
 			);
 		}
+	}
+
+	handleSubmit = (event) => {
+		event.preventDefault();
+		this.setState({ loading: true });
+		authenticate(this.state.email, this.state.password)
+			.then(() => {
+
+			})
+			.catch(() => {
+
+			});
+	}
+
+	handleEmailChange = (event) => {
+		this.setState({ email: event.target.value.slice(0, 100) });
+	}
+
+	handlePasswordChange = (event) => {
+		this.setState({ password: event.target.value.slice(0, 50) });
 	}
 
 }
