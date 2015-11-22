@@ -1,17 +1,47 @@
 .SearchField {
+	position: relative;
+
+	> .Image {
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		left: 15px;
+		top: 12px;
+		color: #ddd;
+	}
 
 	> input {
+		width: 130px;
 		height: 40px;
 		border: 2px solid #eee;
 		border-radius: 40px;
 		box-shadow: none;
 		outline: none;
+		font-size: 16px;
+		color: #222;
+		padding: 0 30px 4px 37px;
+		transition: width .2s ease-in-out;
 
 		&:hover {
 			border-color: #ddd;
 		}
 
-		&:focus {
+		&::placeholder {
+			color: #ccc;
+		}
+	}
+
+	&.expanded > input {
+		width: 250px;
+	}
+
+	&.focused {
+
+		> .Image {
+			color: #bbb;
+		}
+
+		> input {
 			border-color: #ccc;
 		}
 	}

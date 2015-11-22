@@ -63,7 +63,8 @@ module.exports = {
 			"",
 			".js",
 			".jsx",
-			".less"
+			".less",
+			".svg"
 		]
 	},
 

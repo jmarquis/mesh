@@ -53,7 +53,7 @@ export default class Auth extends Component {
 			return (
 				<div className={ "Auth" + (this.state.error ? " error" : "") + (this.state.loading ? " loading" : "") }>
 					<section>
-						<Image svg={logo}/>
+						<Image src={logo}/>
 						<p className="caption">
 							Sign in with your email address and password.
 						</p>
