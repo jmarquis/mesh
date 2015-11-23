@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import createLogger from "redux-logger";
 import { createHistory } from "history";
-import { Router, Route, IndexRoute, Redirect } from "react-router";
+import { Router, Route, IndexRoute, Redirect, IndexRedirect } from "react-router";
 import { syncReduxAndRouter, routeReducer } from "redux-simple-router";
 
 import * as reducers from "./reducers";
@@ -33,15 +33,20 @@ syncReduxAndRouter(history, store, state => state.router);
 
 import Auth from "./components/Auth";
 import Team from "./components/Team";
+import Discussion from "./components/Discussion";
 
 render((
 	<Provider store={store}>
 		<Router history={history}>
 			<Route path="/">
 				<IndexRoute component={Auth}/>
-				<Route path="/teams/:teamId" component={Team}></Route>
+				<Route path="teams/:teamId" component={Team}>
+					<Route path="discussion" component={Discussion}/>
+					<IndexRedirect to="discussion"/>
+					<Redirect from="*" to="discussion"/>
+				</Route>
 			</Route>
-			<Redirect path="*" to="/"/>
+			<Redirect from="*" to="/"/>
 		</Router>
 	</Provider>
 ), document.getElementById("root"));

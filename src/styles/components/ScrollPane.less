@@ -1,0 +1,22 @@
+.ScrollPane {
+	display: flex;
+	position: relative;
+	overflow: hidden;
+
+	> .shadow {
+		content: "";
+		position: absolute;
+		bottom: 100%;
+		height: 20px;
+		left: 0;
+		right: 0;
+		box-shadow: 0 0 10px fade(#222, 20%);
+		opacity: 0;
+		z-index: 1000;
+	}
+
+	> div {
+		overflow-y: auto;
+		flex: auto;
+	}
+}

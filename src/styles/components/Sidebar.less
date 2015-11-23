@@ -1,5 +1,73 @@
 .Sidebar {
-	flex: none;
 	width: 300px;
-	background-color: #fdd;
+	padding: 0 0 0 50px;
+
+	> section {
+
+		> header {
+			font-size: 14px;
+			font-weight: 600;
+			color: #999;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+			margin: 0 0 10px;
+		}
+
+		> ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			> li {
+				margin: 0;
+				padding: 0;
+
+				> a {
+					font-size: 18px;
+					line-height: 21px;
+				}
+
+				& + li {
+					margin-top: 5px;
+				}
+			}
+		}
+
+		&.project-list {
+
+			> ul > li > a {
+				font-size: 18px;
+				line-height: 21px;
+			}
+		}
+
+		&.team {
+
+			> ul > li {
+
+				> a {
+					font-size: 16px;
+					line-height: 20px;
+
+					> figure {
+						display: inline-block;
+						background-color: #eee;
+						width: 24px;
+						height: 24px;
+						margin: 0 8px 0 -1px;
+						border-radius: 24px;
+						vertical-align: middle;
+					}
+				}
+
+				& + li {
+					margin-top: 4px;
+				}
+			}
+		}
+
+		& + section {
+			margin-top: 30px;
+		}
+	}
 }

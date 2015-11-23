@@ -1,0 +1,37 @@
+.Composer {
+	height: 50px;
+	display: flex;
+	flex-flow: row nowrap;
+
+	> a {
+		flex: none;
+		width: 50px;
+		border: 2px solid #eee;
+		border-radius: 5px 0 0 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-image: linear-gradient(fade(#fff, 95%), #fff);
+
+		> .Image {
+			width: 16px;
+			height: 16px;
+			color: #ddd;
+		}
+	}
+
+	> textarea {
+		flex: auto;
+		border: 2px solid #eee;
+		border-left: 0;
+		border-radius: 0 5px 5px 0;
+		margin: 0;
+		box-shadow: none;
+		outline: 0;
+		resize: none;
+		font-size: 18px;
+		line-height: 24px;
+		padding: 9px 20px 10px;
+		background-image: linear-gradient(fade(#fff, 95%), #fff);
+	}
+}

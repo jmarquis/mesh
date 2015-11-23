@@ -1,0 +1,36 @@
+.Discussion {
+	display: flex;
+	position: relative;
+
+	&::before {
+		content: "";
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: 42px;
+		z-index: 5;
+		background-color: #fff;
+	}
+
+	> .Composer {
+		position: absolute;
+		right: 40px;
+		bottom: 40px;
+		left: 50px;
+		z-index: 10;
+	}
+
+	> .ScrollPane {
+		flex: auto;
+
+		> .shadow {
+			left: 50px;
+			right: 40px;
+		}
+
+		> .contents {
+			padding: 0 40px 120px 50px;
+		}
+	}
+}

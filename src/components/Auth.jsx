@@ -8,7 +8,7 @@ import { authenticate } from "../firebase/index";
 
 import Image from "../components/Image";
 
-import logo from "../images/logo-vertical.svg";
+import logo from "../images/logo-vertical";
 
 @connect()
 export default class Auth extends Component {
