@@ -1,11 +1,11 @@
 export function user (state = null, action) {
 	switch (action.type) {
 
-		case "RECEIVE_USER":
-			return action.user;
+		case "UPDATE_USER":
+			return action.userData;
 
 		default:
 			return state;
-			
+
 	}
 }

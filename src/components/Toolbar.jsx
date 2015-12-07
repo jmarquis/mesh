@@ -8,21 +8,25 @@ import ToolbarNav from "./ToolbarNav";
 export default class Toolbar extends Component {
 
 	render () {
+
+		const { team } = this.props;
+
 		return (
 			<div className="Toolbar">
 
 				<div className="team-names">
 					<div className="primary-team">
 						<figure></figure>
-						Syllable +
+						{team.name} +
 					</div>
-					<SecondaryTeamSelector/>
+					<SecondaryTeamSelector teams={team.teams}/>
 				</div>
 
 				<ToolbarNav/>
 
 			</div>
 		);
+
 	}
 
 }

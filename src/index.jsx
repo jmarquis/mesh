@@ -31,7 +31,14 @@ const history = createHistory();
 
 syncReduxAndRouter(history, store, state => state.router);
 
+const requireAuth = (nextState, replaceState) => {
+	if (!store.getState().user) {
+		replaceState({}, "/");
+	}
+};
+
 import Auth from "./components/Auth";
+import Teams from "./components/Teams";
 import Team from "./components/Team";
 import Discussion from "./components/Discussion";
 
@@ -40,10 +47,13 @@ render((
 		<Router history={history}>
 			<Route path="/">
 				<IndexRoute component={Auth}/>
-				<Route path="teams/:teamId" component={Team}>
-					<Route path="discussion" component={Discussion}/>
-					<IndexRedirect to="discussion"/>
-					<Redirect from="*" to="discussion"/>
+				<Route path="teams" onEnter={requireAuth}>
+					<IndexRoute component={Teams}/>
+					<Route path=":teamId" component={Team}>
+						<Route path="discussion" component={Discussion}/>
+						<IndexRedirect to="discussion"/>
+						<Redirect from="*" to="discussion"/>
+					</Route>
 				</Route>
 			</Route>
 			<Redirect from="*" to="/"/>

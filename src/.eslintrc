@@ -1,0 +1,22 @@
+{
+
+	"plugins": [
+		"react"
+	],
+
+	"env": {
+		"node": false,
+		"browser": true,
+		"es6": true
+	},
+
+	"ecmaFeatures": {
+		"modules": true,
+		"jsx": true
+	},
+
+	"rules": {
+		"react/jsx-uses-react": 1
+	}
+
+}

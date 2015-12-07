@@ -20,7 +20,7 @@ export default class Composer extends Component {
 		return (
 			<div className={ "Composer" + (this.state.focused ? " focused" : "") }>
 				<a><Image src={uploadIcon}/></a>
-				<textarea placeholder="Type your message..." autoComplete={false} spellCheck={true} autoCorrect={false} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} value={this.state.message}/>
+				<textarea placeholder="Type your message..." autoComplete={false} spellCheck={true} autoCorrect={false} onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} onKeyDown={this.handleKeyDown} value={this.state.message}/>
 			</div>
 		);
 	}
@@ -35,6 +35,12 @@ export default class Composer extends Component {
 
 	handleChange = (event) => {
 		this.setState({ message: event.target.value });
+	}
+
+	handleKeyDown = (event) => {
+		if (event.keyCode === 13) {
+			// TODO: post message
+		}
 	}
 
 }

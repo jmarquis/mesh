@@ -1,10 +1,18 @@
 import "../styles/components/Sidebar";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
+@connect(state => {
+	const { user, team } = state;
+	return { user, team };
+})
 export default class Sidebar extends Component {
 
 	render () {
+
+		const { team } = this.props;
+
 		return (
 			<div className="Sidebar">
 
@@ -20,7 +28,7 @@ export default class Sidebar extends Component {
 
 				<section className="team">
 					<header>
-						Syllable
+						{ team.name }
 					</header>
 					<ul>
 						<li>
@@ -72,6 +80,7 @@ export default class Sidebar extends Component {
 
 			</div>
 		);
+
 	}
 
 }

@@ -4,13 +4,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updatePath } from "redux-simple-router";
 
-import { authenticate } from "../firebase/index";
+import { setUpAuthListener, authenticate } from "../actions/user";
 
 import Image from "../components/Image";
 
 import logo from "../images/logo-vertical";
 
-@connect()
+@connect(state => {
+	const { authenticated } = state;
+	return { authenticated };
+})
 export default class Auth extends Component {
 
 	constructor (props) {
@@ -18,7 +21,8 @@ export default class Auth extends Component {
 		this.state = {
 			loading: false,
 			error: false,
-			confirmedNotAuthenticated: false
+			confirmedNotAuthenticated: false,
+			authAttempted: false
 		};
 	}
 
@@ -26,23 +30,31 @@ export default class Auth extends Component {
 
 		const { dispatch } = this.props;
 
-		setTimeout(() => {
-			authenticate()
-				.then(() => {
-					dispatch(updatePath("/teams/123"));
-				})
-				.catch(() => {
-					this.setState({
-						loading: false,
-						confirmedNotAuthenticated: true
-					});
-				});
-		}, 1000);
+		setTimeout(() => dispatch(setUpAuthListener()), 1000);
+
+	}
+
+	componentWillReceiveProps (nextProps) {
+
+		const { dispatch } = this.props;
+
+		if (nextProps.authenticated === true) {
+			dispatch(updatePath("/teams"));
+		} else if (nextProps.authenticated === "loading") {
+			this.setState({
+				loading: true
+			});
+		} else if (nextProps.authenticated === false) {
+			this.setState({
+				confirmedNotAuthenticated: true,
+				loading: false,
+				error: this.state.authAttempted || false
+			});
+		}
 
 	}
 
 	render () {
-
 		if (!this.state.confirmedNotAuthenticated) {
 			return (
 				<div className="Auth">
@@ -77,23 +89,8 @@ export default class Auth extends Component {
 		const { dispatch } = this.props;
 
 		event.preventDefault();
-
-		this.setState({
-			loading: true
-		});
-
-		setTimeout(() => {
-			authenticate(this.state.email, this.state.password)
-				.then(() => {
-					dispatch(updatePath("/teams/123"));
-				})
-				.catch(() => {
-					this.setState({
-						loading: false,
-						error: true
-					});
-				});
-		}, 500);
+		this.setState({ authAttempted: true });
+		dispatch(authenticate(this.state.email, this.state.password));
 
 	}
 
