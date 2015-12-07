@@ -1,35 +1,44 @@
-import "react-select/dist/react-select.css";
 import "../styles/components/SecondaryTeamSelector";
 
 import React, { Component } from "react";
 
 export default class SecondaryTeamSelector extends Component {
 
+	constructor (props) {
+
+		super(props);
+
+		const { teams } = this.props;
+
+		this.state = {
+			selectedTeam: Object.keys(teams)[0]
+		};
+
+	}
+
 	render () {
 
 		const { teams } = this.props;
 
-		const teamsArray = [{
-			value: 123,
-			label: "A Longer Title"
-		}, ...Object.keys(teams).map(teamId => {
-			return {
-				value: teamId,
-				label: teamId
-			};
-		})];
-
 		return (
 			<div className="SecondaryTeamSelector">
-				<Select value={teamsArray[0].value} options={teamsArray}/>
-				{ /* <div>
+				<div>
+					{this.state.selectedTeam}
+				</div>
+				<select value={this.state.selectedTeam} onChange={this.selectTeam}>
 					{Object.keys(teams).map(teamId => {
-						return teamId;
+						return <option value={teamId}>{teamId}</option>;
 					})}
-				</div> */ }
+				</select>
 			</div>
 		);
 
+	}
+
+	selectTeam = (event) => {
+		this.setState({
+			selectedTeam: event.target.options[event.target.selectedIndex].value
+		});
 	}
 
 }
